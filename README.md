@@ -29,8 +29,9 @@
 ## Стек технологий
   + FrontEnd: [Bootstrap 4](https://bootstrap-4.ru/) + [JQuery](https://jquery.com/) 
     + ***Дополнительно [React](https://reactjs.org/)***
-  + BackEnd: [.NET Core](https://docs.microsoft.com/ru-ru/dotnet/core/), API controller, Code First
-  + Тестирование: [NUnit](https://nunit.org/)/[MStest](https://docs.microsoft.com/ru-ru/dotnet/core/testing/unit-testing-with-mstest) - UnitTests, ***[Selenium](https://www.seleniumhq.org) - автоматизация действий веб браузера (Доп задание)***
+  + BackEnd: [.NET Core](https://docs.microsoft.com/ru-ru/dotnet/core/), [MS SQL Server](https://www.microsoft.com/ru-ru/sql-server/sql-server-2016), [Docker](https://www.docker.com/) API controller, Code First
+  + Тестирование: [NUnit](https://nunit.org/) - UnitTests, 
+    + ***Дополнительно [Selenium](https://www.seleniumhq.org/)***
   
 ## Тестирование
    Unit-тесты </br>
