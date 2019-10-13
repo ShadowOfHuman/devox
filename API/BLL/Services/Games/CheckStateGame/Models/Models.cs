@@ -9,7 +9,7 @@ namespace BLL.Services.Games.CheckStateGame.Models
         public long IdGame { get; set; }
         public long IdCreatedUser { get; set; }
         public long IdUser { get; set; }
-        public char[][] PlayingField { get; set; }
+        public string[] PlayingField { get; set; }
     }
 
     class OutModel

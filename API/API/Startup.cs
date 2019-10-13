@@ -19,6 +19,10 @@ using System.Text;
 using API.BLL.Services.Users;
 using API.BLL.Services.AccessControl;
 using API.BLL.Services.Games;
+using System.Reflection;
+using System.IO;
+using Swashbuckle.AspNetCore.Swagger;
+using API.Hubs;
 
 namespace API
 {
@@ -43,7 +47,6 @@ namespace API
             services.AddDbContext<ApplicationDBContext>(options => options.UseMySql(appSettings.DBConnectionString));
             services.AddScoped<IAccessControlService, AccessControlService>();
             services.AddScoped<IUserServices, UserService>();
-            
 
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
@@ -78,7 +81,17 @@ namespace API
                      };
                  }
                  );
-    }
+
+            services.AddSwaggerGen(c =>
+            {
+                c.CustomSchemaIds(x => x.FullName);
+                c.SwaggerDoc("v1", new Info { Title = "DevOX API", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+            services.AddSignalR();
+        }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDbContext context)
@@ -93,10 +106,19 @@ namespace API
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "DevOX API V1");
+            });
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<GameHub>("/game");
+            });
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
+            
         }
     }
 }

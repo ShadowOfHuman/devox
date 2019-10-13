@@ -19,7 +19,6 @@ namespace BLL.Services.Games
         {
             this._dbContext = dbContext;
         }
-
         //1 - крестики, 2 - нолики, 0 - ни че го
         public long CheckStateGame(int[][] plyingField, Dictionary<int, long> players, int countItemForWin)
         {
@@ -97,7 +96,6 @@ namespace BLL.Services.Games
             }
             return 0;
         }
-
         async public Task ConnectToGame(long idGame, long idUser)
         {
             Game game = await this.Get(idGame);
@@ -111,12 +109,10 @@ namespace BLL.Services.Games
             _dbContext.Games.Update(game);
             await _dbContext.SaveChangesAsync();
         }
-
         public Task<long> Create(Game item, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
-
         async public Task<long> CreateGame(long IdUser)
         {
             var user = _dbContext.Users.Find(IdUser);
@@ -133,14 +129,12 @@ namespace BLL.Services.Games
             await _dbContext.SaveChangesAsync();
             return game.Id;
         }
-
         async public Task Delete(long id, CancellationToken cancellationToken = default)
         {
             var game = await this.Get(id);
             _dbContext.Games.Remove(game);
             await _dbContext.SaveChangesAsync();
         }
-
         async public Task<Game> Get(long id, CancellationToken cancellationToken = default)
         {
             var game = await _dbContext.Games.FindAsync(id);
@@ -150,30 +144,40 @@ namespace BLL.Services.Games
             }
             return game;
         }
-
         async public Task<IEnumerable<Game>> GetAll(CancellationToken cancellationToken = default)
         {
             return await _dbContext.Games.ToListAsync(cancellationToken);
         }
-
         async public Task<IEnumerable<Game>> GetAllGameByUser(long IdUser)
         {
             var result = await _dbContext.Games.Where(x => x.CreatedUser.Id == IdUser).ToListAsync();
             return result;
         }
-
         public async Task<StateGame> GetStateGame(long idGame)
         {
             Game game = await this.Get(idGame);
             return (StateGame)game.GameState;
         }
-
         async public Task Update(Game item, CancellationToken cancellationToken = default)
         {
             _dbContext.Games.Update(item);
             await _dbContext.SaveChangesAsync();
 
         }
-
+        private string[] PlayingFieldToArray(string field)
+        {
+            string[] rows = field.Split('*');
+            return rows;
+        }
+        private string PlayingFieldToString(string[] field)
+        {
+            char sep = '*';
+            string result = "";
+            foreach(string item in field)
+            {
+                result.Concat(sep + item);
+            }
+            return result;
+        }
     }
 }

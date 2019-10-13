@@ -4,6 +4,7 @@ using API.BLL.Services.Users;
 using API.DAL.Models;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using ConnectToGame = API.BLL.Services.Games.ConnectToGame.Models;
 using CreateGame = API.BLL.Services.Games.CreateGame.Models;
@@ -54,7 +55,7 @@ namespace API.Hubs
             {
                 await Clients.GroupExcept(inModel.IdGame.ToString(),
                     new List<string> { Context.ConnectionId }).SendAsync("Method name", outModel);
-                game.PlayingField = inModel.PlayingField;
+                game.PlayingField = ConvertToArrayInt(inModel.PlayingField);
                 await _gameServices.Update(game);
             }
             else
@@ -64,10 +65,23 @@ namespace API.Hubs
                 await Clients.Group(inModel.IdGame.ToString()).SendAsync("Method name", outModel);
                 game.GameState = (int)StateGame.GameOver;
                 game.IdWinUser = winUserId;
-                game.PlayingField = inModel.PlayingField;
+                game.PlayingField = ConvertToArrayInt(inModel.PlayingField);
                 await _gameServices.Update(game);
                 await Clients.Group(inModel.IdGame.ToString()).SendAsync("Close connection", outModel);
             }
+        }
+
+        private string ConvertToArrayInt(int[][] input)
+        {
+            StringBuilder output = new StringBuilder();
+
+            foreach (int [] item in input){
+                foreach(int itemTwo in item)
+                {
+                    output.Append(itemTwo);
+                }
+            }
+            return output.ToString();
         }
     }
 }
