@@ -13,5 +13,7 @@ namespace API.DAL.Models
         public string Email { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] Salt { get; set; }
+        public int Rating { get; set; }
+
     }
 }
