@@ -28,31 +28,29 @@ namespace API.BLL.Services.AccessControl
         public async Task<Authentication.Models.OutModel> Authentication(Authentication.Models.InModel inModel, CancellationToken cancellationToken = default)
         {
 
-            if (string.IsNullOrEmpty(inModel.UserName) || string.IsNullOrEmpty(inModel.PasswordHash))
+            if (string.IsNullOrEmpty(inModel.Email) || string.IsNullOrEmpty(inModel.PasswordHash))
             {
-                return null;
+                throw new ArgumentNullException("Username, password or email is empty.");
             }
 
-            var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Username == inModel.UserName, cancellationToken);
+            var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Email == inModel.Email, cancellationToken);
 
             if (user == null)
             {
-                return null;
+                throw new InvalidOperationException("User with email not exist.");
             }
 
             if (!Cryptor.VerifyPasswordHash(inModel.PasswordHash, user.PasswordHash, user.Salt))
             {
-                return null;
+                throw new InvalidOperationException("Email or password is incorrect.");
             }
             return new Authentication.Models.OutModel{ IdUser = user.Id, UserName = user.Username};
         }
 
         public async Task<Registration.Models.OutModel> Registration(Registration.Models.InModel inModel, CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrEmpty(inModel.UserName) || 
-                inModel.PasswordHash == null || 
-                string.IsNullOrEmpty(inModel.Email)){
-                return null;
+            if (string.IsNullOrEmpty(inModel.UserName) || inModel.PasswordHash == null || string.IsNullOrEmpty(inModel.Email)){
+                throw new ArgumentNullException("Username, password or email is empty.");
             }
 
             var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Username == inModel.UserName || 
@@ -61,25 +59,22 @@ namespace API.BLL.Services.AccessControl
             User newUser;
             if (user != null)
             {
-                return null;
+                throw new InvalidOperationException($"User with {user.Email} or {user.Username} already exist.");
             }
-            else
+
+            byte[] genSalt = Cryptor.GenerateSalt();
+            newUser = new User
             {
-                byte[] genSalt = Cryptor.GenerateSalt();
-                newUser = new User
-                {
-                    Username = inModel.UserName,
-                    Email = inModel.Email,
-                    Salt = genSalt,
-                    PasswordHash = Cryptor.CalculateHashOfPassword(inModel.PasswordHash, genSalt)
-                    
-                };
+                Username = inModel.UserName,
+                Email = inModel.Email,
+                Salt = genSalt,
+                PasswordHash = Cryptor.CalculateHashOfPassword(inModel.PasswordHash, genSalt)
 
-                _dbContext.Users.Add(newUser);
+            };
+            _dbContext.Users.Add(newUser);
 
-                await _dbContext.SaveChangesAsync(cancellationToken);
-                return new Registration.Models.OutModel { IdUser = newUser.Id};
-            }
+            await _dbContext.SaveChangesAsync(cancellationToken);
+            return new Registration.Models.OutModel { IdUser = newUser.Id };
         }
     }
 }

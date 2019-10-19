@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\devox\\API\\Test\\Test.csproj": {}
+    "E:\\devox\\devox-backend\\API\\Test\\Test.csproj": {}
   },
   "projects": {
-    "E:\\devox\\API\\API\\API.csproj": {
+    "E:\\devox\\devox-backend\\API\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\devox\\API\\API\\API.csproj",
+        "projectUniqueName": "E:\\devox\\devox-backend\\API\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "E:\\devox\\API\\API\\API.csproj",
+        "projectPath": "E:\\devox\\devox-backend\\API\\API\\API.csproj",
         "packagesPath": "C:\\Users\\piroz\\.nuget\\packages\\",
-        "outputPath": "E:\\devox\\API\\API\\obj\\",
+        "outputPath": "E:\\devox\\devox-backend\\API\\API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -30,11 +30,11 @@
         "frameworks": {
           "netcoreapp2.2": {
             "projectReferences": {
-              "E:\\devox\\API\\BLL\\BLL.csproj": {
-                "projectPath": "E:\\devox\\API\\BLL\\BLL.csproj"
+              "E:\\devox\\devox-backend\\API\\BLL\\BLL.csproj": {
+                "projectPath": "E:\\devox\\devox-backend\\API\\BLL\\BLL.csproj"
               },
-              "E:\\devox\\API\\DAL\\DAL.csproj": {
-                "projectPath": "E:\\devox\\API\\DAL\\DAL.csproj"
+              "E:\\devox\\devox-backend\\API\\DAL\\DAL.csproj": {
+                "projectPath": "E:\\devox\\devox-backend\\API\\DAL\\DAL.csproj"
               }
             }
           }
@@ -54,10 +54,18 @@
               "version": "[2.2.0, )",
               "autoReferenced": true
             },
+            "Microsoft.AspNetCore.Hosting.Server.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.AspNetCore.Razor.Design": {
               "suppressParent": "All",
               "target": "Package",
               "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.SignalR.Core": {
+              "target": "Package",
+              "version": "[1.1.0, )"
             },
             "Microsoft.NETCore.App": {
               "suppressParent": "All",
@@ -65,13 +73,33 @@
               "version": "[2.2.0, )",
               "autoReferenced": true
             },
+            "Microsoft.OpenApi": {
+              "target": "Package",
+              "version": "[1.1.4, )"
+            },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[2.2.3, )"
             },
+            "MySql.Data.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.17, )"
+            },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[2.2.0, )"
+            },
+            "Swashbuckle.AspNetCore.Swagger": {
+              "target": "Package",
+              "version": "[4.0.1, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerGen": {
+              "target": "Package",
+              "version": "[4.0.1, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerUi": {
+              "target": "Package",
+              "version": "[4.0.1, )"
             },
             "System.ComponentModel.Annotations": {
               "target": "Package",
@@ -88,18 +116,18 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100-preview8-013656\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\devox\\API\\BLL\\BLL.csproj": {
+    "E:\\devox\\devox-backend\\API\\BLL\\BLL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\devox\\API\\BLL\\BLL.csproj",
+        "projectUniqueName": "E:\\devox\\devox-backend\\API\\BLL\\BLL.csproj",
         "projectName": "BLL",
-        "projectPath": "E:\\devox\\API\\BLL\\BLL.csproj",
+        "projectPath": "E:\\devox\\devox-backend\\API\\BLL\\BLL.csproj",
         "packagesPath": "C:\\Users\\piroz\\.nuget\\packages\\",
-        "outputPath": "E:\\devox\\API\\BLL\\obj\\",
+        "outputPath": "E:\\devox\\devox-backend\\API\\BLL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -118,11 +146,11 @@
         "frameworks": {
           "netcoreapp2.2": {
             "projectReferences": {
-              "E:\\devox\\API\\Common\\Common.csproj": {
-                "projectPath": "E:\\devox\\API\\Common\\Common.csproj"
+              "E:\\devox\\devox-backend\\API\\Common\\Common.csproj": {
+                "projectPath": "E:\\devox\\devox-backend\\API\\Common\\Common.csproj"
               },
-              "E:\\devox\\API\\DAL\\DAL.csproj": {
-                "projectPath": "E:\\devox\\API\\DAL\\DAL.csproj"
+              "E:\\devox\\devox-backend\\API\\DAL\\DAL.csproj": {
+                "projectPath": "E:\\devox\\devox-backend\\API\\DAL\\DAL.csproj"
               }
             }
           }
@@ -157,18 +185,18 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100-preview8-013656\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\devox\\API\\Common\\Common.csproj": {
+    "E:\\devox\\devox-backend\\API\\Common\\Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\devox\\API\\Common\\Common.csproj",
+        "projectUniqueName": "E:\\devox\\devox-backend\\API\\Common\\Common.csproj",
         "projectName": "Common",
-        "projectPath": "E:\\devox\\API\\Common\\Common.csproj",
+        "projectPath": "E:\\devox\\devox-backend\\API\\Common\\Common.csproj",
         "packagesPath": "C:\\Users\\piroz\\.nuget\\packages\\",
-        "outputPath": "E:\\devox\\API\\Common\\obj\\",
+        "outputPath": "E:\\devox\\devox-backend\\API\\Common\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -215,18 +243,18 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100-preview8-013656\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\devox\\API\\DAL\\DAL.csproj": {
+    "E:\\devox\\devox-backend\\API\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\devox\\API\\DAL\\DAL.csproj",
+        "projectUniqueName": "E:\\devox\\devox-backend\\API\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "E:\\devox\\API\\DAL\\DAL.csproj",
+        "projectPath": "E:\\devox\\devox-backend\\API\\DAL\\DAL.csproj",
         "packagesPath": "C:\\Users\\piroz\\.nuget\\packages\\",
-        "outputPath": "E:\\devox\\API\\DAL\\obj\\",
+        "outputPath": "E:\\devox\\devox-backend\\API\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -277,18 +305,18 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100-preview8-013656\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\devox\\API\\Test\\Test.csproj": {
+    "E:\\devox\\devox-backend\\API\\Test\\Test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\devox\\API\\Test\\Test.csproj",
+        "projectUniqueName": "E:\\devox\\devox-backend\\API\\Test\\Test.csproj",
         "projectName": "Test",
-        "projectPath": "E:\\devox\\API\\Test\\Test.csproj",
+        "projectPath": "E:\\devox\\devox-backend\\API\\Test\\Test.csproj",
         "packagesPath": "C:\\Users\\piroz\\.nuget\\packages\\",
-        "outputPath": "E:\\devox\\API\\Test\\obj\\",
+        "outputPath": "E:\\devox\\devox-backend\\API\\Test\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -298,20 +326,20 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netcoreapp3.0"
+          "netcoreapp2.2"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netcoreapp3.0": {
+          "netcoreapp2.2": {
             "projectReferences": {
-              "E:\\devox\\API\\API\\API.csproj": {
-                "projectPath": "E:\\devox\\API\\API\\API.csproj"
+              "E:\\devox\\devox-backend\\API\\API\\API.csproj": {
+                "projectPath": "E:\\devox\\devox-backend\\API\\API\\API.csproj"
               },
-              "E:\\devox\\API\\BLL\\BLL.csproj": {
-                "projectPath": "E:\\devox\\API\\BLL\\BLL.csproj"
+              "E:\\devox\\devox-backend\\API\\BLL\\BLL.csproj": {
+                "projectPath": "E:\\devox\\devox-backend\\API\\BLL\\BLL.csproj"
               }
             }
           }
@@ -323,11 +351,17 @@
         }
       },
       "frameworks": {
-        "netcoreapp3.0": {
+        "netcoreapp2.2": {
           "dependencies": {
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[15.9.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
             },
             "NUnit3TestAdapter": {
               "target": "Package",
@@ -348,12 +382,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100-preview8-013656\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
