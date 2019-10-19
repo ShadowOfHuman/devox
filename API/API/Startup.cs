@@ -23,6 +23,7 @@ using System.Reflection;
 using System.IO;
 using Swashbuckle.AspNetCore.Swagger;
 using API.Hubs;
+using API.Extentions;
 
 namespace API
 {
@@ -116,6 +117,7 @@ namespace API
                 routes.MapHub<GameHub>("/game");
             });
             app.UseHttpsRedirection();
+            app.ConfigureCustomExceptionMiddleware();
             app.UseAuthentication();
             app.UseMvc();
             
