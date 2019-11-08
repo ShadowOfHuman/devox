@@ -14,5 +14,6 @@ namespace API.BLL.Services.AccessControl.Authentication.Models
     {
         public long IdUser { get; set; }
         public string UserName { get; set; }
+        public string Token { get; set; }
     }
 }

@@ -7,6 +7,7 @@ namespace API.BLL.Models
     public enum StateGame
     {
         StartedGame,
-        GameOver
+        GameOver,
+        NotFinish
     }
 }

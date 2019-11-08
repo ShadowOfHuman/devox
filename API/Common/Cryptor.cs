@@ -7,18 +7,18 @@ namespace API.Common
 {
     public static class Cryptor
     {
-        static public bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
+        static public bool VerifyPasswordHash(string password, byte[] storedHash)
         {
             if (password == null) throw new ArgumentNullException("password");
             if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
-            var computedHash = CalculateHashOfPassword(password, storedSalt);
+            var computedHash = CalculateHashOfPassword(password);
             return computedHash.SequenceEqual(storedHash);
         }
-        static public byte[] CalculateHashOfPassword(string password, byte[] salt)
+        static public byte[] CalculateHashOfPassword(string password)
         {
             var hashed = KeyDerivation.Pbkdf2(
                 password,
-                salt,
+                GenerateSalt(),
                 KeyDerivationPrf.HMACSHA256,
                 10000,
                 256 / 8);

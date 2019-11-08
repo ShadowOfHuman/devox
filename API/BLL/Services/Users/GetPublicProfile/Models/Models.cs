@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace API.BLL.Services.Users.GetProfile.Models
+namespace API.BLL.Services.Users.GetPublicProfile.Models
 {
     public class OutModel
     {
         public DateTime CreateDate { get; set; }
         public string Username { get; set; }
-        public string Email { get; set; }
         public int Rating { get; set; }
     }
 }

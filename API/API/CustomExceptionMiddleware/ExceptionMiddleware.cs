@@ -51,13 +51,13 @@ namespace API.CustomExceptionMiddleware
                 case var _ when exception is ArgumentNullException:
                     {
                         errorDetails.StatusCode = (int)HttpStatusCode.BadRequest;
-                        errorDetails.Message = $"Invalid argument: {exception.Message}";
+                        errorDetails.Message = exception.Message;
                         break;
                     }
                 case var _ when exception is InvalidOperationException:
                     {
                         errorDetails.StatusCode = (int)HttpStatusCode.BadRequest;
-                        errorDetails.Message = $"Invalid operation: {exception.Message}";
+                        errorDetails.Message = exception.Message;
                         break;
                     }
                 default:

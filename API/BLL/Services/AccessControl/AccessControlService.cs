@@ -12,6 +12,9 @@ using System.Linq;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using API.Common;
 using Microsoft.Extensions.Options;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace API.BLL.Services.AccessControl
 {
@@ -25,7 +28,9 @@ namespace API.BLL.Services.AccessControl
 
         }
 
-        public async Task<Authentication.Models.OutModel> Authentication(Authentication.Models.InModel inModel, CancellationToken cancellationToken = default)
+        public async Task<Authentication.Models.OutModel> Authentication(Authentication.Models.InModel inModel, 
+            string secret,
+            CancellationToken cancellationToken = default)
         {
 
             if (string.IsNullOrEmpty(inModel.Email) || string.IsNullOrEmpty(inModel.PasswordHash))
@@ -39,12 +44,27 @@ namespace API.BLL.Services.AccessControl
             {
                 throw new InvalidOperationException("User with email not exist.");
             }
-
-            if (!Cryptor.VerifyPasswordHash(inModel.PasswordHash, user.PasswordHash, user.Salt))
+            if (!Cryptor.VerifyPasswordHash(inModel.PasswordHash, user.PasswordHash))
             {
                 throw new InvalidOperationException("Email or password is incorrect.");
             }
-            return new Authentication.Models.OutModel{ IdUser = user.Id, UserName = user.Username};
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), 
+                SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            user.Token = tokenHandler.WriteToken(token);
+            return new Authentication.Models.OutModel{ IdUser = user.Id, 
+                UserName = user.Username, Token=user.Token};
         }
 
         public async Task<Registration.Models.OutModel> Registration(Registration.Models.InModel inModel, CancellationToken cancellationToken = default)
@@ -67,8 +87,7 @@ namespace API.BLL.Services.AccessControl
             {
                 Username = inModel.UserName,
                 Email = inModel.Email,
-                Salt = genSalt,
-                PasswordHash = Cryptor.CalculateHashOfPassword(inModel.PasswordHash, genSalt)
+                PasswordHash = Cryptor.CalculateHashOfPassword(inModel.PasswordHash)
 
             };
             _dbContext.Users.Add(newUser);

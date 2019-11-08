@@ -14,6 +14,7 @@ namespace API.DAL.Context
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> option) : base(option) { }
         public DbSet<User> Users { get; set; }
         public DbSet<Game> Games { get; set; }
+        public DbSet<GameMove> GameMoves {get;set;}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -21,6 +22,8 @@ namespace API.DAL.Context
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
             modelBuilder.Entity<Game>().HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
+            modelBuilder.Entity<User>().HasMany(u => u.Games).WithOne(g => g.FirstUser);
+            modelBuilder.Entity<Game>().HasMany(s => s.GameMoves).WithOne(s => s.Game);
         }
 
         public override int SaveChanges()
