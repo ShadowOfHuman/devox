@@ -1,17 +1,20 @@
 ﻿using API.DAL.Models.Abstract;
+using System.Collections.Generic;
 
 namespace API.DAL.Models
 {
     public class Game : BasicModel
     {
-        public User CreatedUser { get; set; }
-        public User User { get; set; }
         public int  GameState{ get; set; }
         public long IdWinUser { get; set; }
         public string UrlHash { get; set; }
-        public string PlayingField { get; set; }
-        public int LenghtField { get; set; }
-        public int WidthField { get; set; }
+        public int SizeField { get; set; }
         public int CountItemForWin { get; set; }
+        public User FirstUser { get; set; }
+        public User TwoUser { get; set; }
+        public string ConnectionIdUserFirst { get; set; }
+        public string ConnectionIdUserSecond { get; set; }
+        public IEnumerable<GameMove> GameMoves { get; set; }
+
     }
 }

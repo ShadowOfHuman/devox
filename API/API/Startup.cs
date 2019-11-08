@@ -24,6 +24,7 @@ using System.IO;
 using Swashbuckle.AspNetCore.Swagger;
 using API.Hubs;
 using API.Extentions;
+using BLL.Services.Games;
 
 namespace API
 {
@@ -35,6 +36,7 @@ namespace API
         }
 
         public IConfiguration Configuration { get; }
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -45,9 +47,10 @@ namespace API
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<IDbContext, ApplicationDBContext>();
-            services.AddDbContext<ApplicationDBContext>(options => options.UseMySql(appSettings.DBConnectionString));
+            services.AddDbContext<ApplicationDBContext>(options => options.UseMySql(appSettings.ConnectionString));
             services.AddScoped<IAccessControlService, AccessControlService>();
             services.AddScoped<IUserServices, UserService>();
+            services.AddScoped<IGameServices, GameServices>();
 
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
@@ -82,7 +85,7 @@ namespace API
                      };
                  }
                  );
-
+            services.AddCors();
             services.AddSwaggerGen(c =>
             {
                 c.CustomSchemaIds(x => x.FullName);
@@ -116,6 +119,11 @@ namespace API
             {
                 routes.MapHub<GameHub>("/game");
             });
+            app.UseCors(builder =>
+            builder.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+                );
             app.UseHttpsRedirection();
             app.ConfigureCustomExceptionMiddleware();
             app.UseAuthentication();

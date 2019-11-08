@@ -11,7 +11,8 @@ namespace API.BLL.Services.Games
         Task<IEnumerable<Game>> GetAllGameByUser(long IdUser);
         Task ConnectToGame(long idGame, long idUser);
         Task<StateGame> GetStateGame(long idGame);
-        long CheckStateGame(int[][] plyingField, Dictionary<int, long> players, int countItemForWin);
+        Task<StateGame> MakeMove(long userId, long gameId, int newX, int newY);
+        Task SetGameNoFinished(long gameId);
 
     }
 }

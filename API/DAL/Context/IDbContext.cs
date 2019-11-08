@@ -13,6 +13,7 @@ namespace API.DAL.Context
     {
         DbSet<User> Users { get; }
         DbSet<Game> Games { get; }
+        DbSet<GameMove> GameMoves { get; }
         int SaveChanges();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         void EnsureCreated();

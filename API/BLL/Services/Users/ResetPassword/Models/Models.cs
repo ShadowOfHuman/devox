@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BLL.Services.Users.ResetPassword.Models
+namespace API.BLL.Services.Users.ResetPassword.Models
 {
-    class InModel
+    public class InModel
     {
         public long IdUser { get; set; }
-        public string NewPassword { get; set; }
+        public string OldPasswordHash { get; set; }
+        public string NewPasswordHash { get; set; }
     }
 }

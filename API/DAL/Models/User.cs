@@ -12,8 +12,8 @@ namespace API.DAL.Models
         public string Username { get; set; }
         public string Email { get; set; }
         public byte[] PasswordHash { get; set; }
-        public byte[] Salt { get; set; }
         public int Rating { get; set; }
-
+        public string Token { get; set; }
+        public IEnumerable<Game> Games { get; set; }
     }
 }

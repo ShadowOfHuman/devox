@@ -3,6 +3,7 @@ using API.BLL.Services.Games;
 using API.BLL.Services.Users;
 using API.DAL.Models;
 using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,46 +29,32 @@ namespace API.Hubs
             long gameName = await _gameServices.CreateGame(inModel.IdCreatedUser);
             await Groups.AddToGroupAsync(Context.ConnectionId, gameName.ToString());
             //TODO generate link and send it to user for share game
-            await Clients.Caller.SendAsync("name method on UI", new CreateGame.OutModel { IdGame = gameName });
+            await Clients.Caller.SendAsync("CreatedGame", new CreateGame.OutModel { IdGame = gameName });
         }
 
         async public Task ConnectToGame(ConnectToGame.InModel inModel)
         {
             //TODO check active this game or not
+            await _gameServices.ConnectToGame(inModel.IdGame, inModel.IdGame);
             await Groups.AddToGroupAsync(Context.ConnectionId, inModel.IdGame.ToString());
         }
 
         async public Task MakeAMove(MakeAMoveModel.InModel inModel)
         {
-            long winUserId = _gameServices.CheckStateGame(inModel.PlayingField,
-                inModel.Players, inModel.CountItemForWin);
-            Game game = await _gameServices.Get(inModel.IdGame);
-            MakeAMoveModel.OutModel outModel = new MakeAMoveModel.OutModel
+            if(await _gameServices.MakeMove(inModel.IdUser, inModel.IdGame, inModel.X, inModel.Y)
+                == StateGame.GameOver)
             {
-                IdGame = inModel.IdGame,
-                Players = inModel.Players,
-                PlayingField = inModel.PlayingField,
-                CountItemForWin = inModel.CountItemForWin,
-                StateGame = inModel.StateGame
-
-            };
-            if (winUserId == 0)
-            {
-                await Clients.GroupExcept(inModel.IdGame.ToString(),
-                    new List<string> { Context.ConnectionId }).SendAsync("Method name", outModel);
-                game.PlayingField = ConvertToArrayInt(inModel.PlayingField);
-                await _gameServices.Update(game);
+                await Clients.OthersInGroup(inModel.IdGame.ToString()).SendAsync("GameOver");
+                await Clients.Caller.SendAsync("UserWin");
+                await Clients.Groups(inModel.IdGame.ToString()).SendAsync("Disconnect");
             }
             else
             {
-                outModel.StateGame = StateGame.GameOver;
-                outModel.IdWinUser = winUserId;
-                await Clients.Group(inModel.IdGame.ToString()).SendAsync("Method name", outModel);
-                game.GameState = (int)StateGame.GameOver;
-                game.IdWinUser = winUserId;
-                game.PlayingField = ConvertToArrayInt(inModel.PlayingField);
-                await _gameServices.Update(game);
-                await Clients.Group(inModel.IdGame.ToString()).SendAsync("Close connection", outModel);
+                await Clients.OthersInGroup(inModel.IdGame.ToString()).SendAsync("NextMove", 
+                    new MakeAMoveModel.OutModel {
+                        LastX = inModel.X,
+                        LastY = inModel.Y,
+                    });
             }
         }
 
@@ -82,6 +69,12 @@ namespace API.Hubs
                 }
             }
             return output.ToString();
+        }
+
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            
+            return base.OnDisconnectedAsync(exception);
         }
     }
 }
