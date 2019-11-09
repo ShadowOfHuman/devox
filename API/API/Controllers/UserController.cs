@@ -15,6 +15,8 @@ using API.BLL.Services.AccessControl;
 using API.BLL.Services.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
+using API.BLL.Validators;
+using FluentValidation;
 
 namespace API.Controllers
 {
@@ -39,6 +41,8 @@ namespace API.Controllers
         [Route("registration")]
         public async Task<Registration.OutModel> Registration([FromBody]Registration.InModel inModel)
         {
+            RegistrationValidator validationRules = new RegistrationValidator();
+            await validationRules.ValidateAndThrowAsync(inModel);
             return await _iAccessControlService.Registration(inModel);
         }
 
@@ -47,6 +51,8 @@ namespace API.Controllers
         [Route("authentication")]
         public async Task<Authentication.OutModel> Authentication([FromBody]Authentication.InModel inModel)
         {
+            AuthValidator validationRules = new AuthValidator();
+            await validationRules.ValidateAndThrowAsync(inModel);
             return await _iAccessControlService.Authentication(inModel, _appSettings.Secret);
         }
 
@@ -55,6 +61,8 @@ namespace API.Controllers
         [Authorize]
         public async Task<IActionResult> ChangeProfile([FromBody] ChangeProfile.InModel inModel)
         {
+            ChangeProfileValidator validationRules = new ChangeProfileValidator();
+            await validationRules.ValidateAndThrowAsync(inModel);
             await _userService.UpdateProfile(inModel.UserId, inModel.Email, inModel.Username);
             return Ok();
         }

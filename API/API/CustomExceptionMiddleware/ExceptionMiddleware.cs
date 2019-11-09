@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -60,6 +61,10 @@ namespace API.CustomExceptionMiddleware
                         errorDetails.Message = exception.Message;
                         break;
                     }
+                case var _ when exception is ValidationException:
+                    errorDetails.StatusCode = (int)HttpStatusCode.BadRequest;
+                    errorDetails.Message = exception.Message;
+                    break;
                 default:
                     {
                         errorDetails.StatusCode = (int)HttpStatusCode.InternalServerError;
