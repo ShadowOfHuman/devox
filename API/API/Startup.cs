@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using API.DAL.Context;
 using Microsoft.EntityFrameworkCore;
-using API.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -25,6 +24,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using API.Hubs;
 using API.Extentions;
 using BLL.Services.Games;
+using API.BLL.Helpers;
 
 namespace API
 {

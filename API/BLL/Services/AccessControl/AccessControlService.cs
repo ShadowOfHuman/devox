@@ -15,28 +15,30 @@ using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using API.BLL.Validators;
+using FluentValidation;
+using API.BLL.Helpers;
 
 namespace API.BLL.Services.AccessControl
 {
     public class AccessControlService : IAccessControlService
     {
         private readonly IDbContext _dbContext;
+        private readonly AppSettings _appSettings;
 
-        public AccessControlService(IDbContext dbContext)
+        public AccessControlService(IDbContext dbContext, IOptions<AppSettings> options)
         {
             this._dbContext = dbContext;
+            _appSettings = options.Value;
 
         }
 
         public async Task<Authentication.Models.OutModel> Authentication(Authentication.Models.InModel inModel, 
-            string secret,
             CancellationToken cancellationToken = default)
         {
 
-            if (string.IsNullOrEmpty(inModel.Email) || string.IsNullOrEmpty(inModel.PasswordHash))
-            {
-                throw new ArgumentNullException("Username, password or email is empty.");
-            }
+            AuthValidator authValidator = new AuthValidator();
+            await authValidator.ValidateAndThrowAsync(inModel);
 
             var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Email == inModel.Email, cancellationToken);
 
@@ -50,7 +52,7 @@ namespace API.BLL.Services.AccessControl
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(secret);
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -69,9 +71,8 @@ namespace API.BLL.Services.AccessControl
 
         public async Task<Registration.Models.OutModel> Registration(Registration.Models.InModel inModel, CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrEmpty(inModel.UserName) || inModel.PasswordHash == null || string.IsNullOrEmpty(inModel.Email)){
-                throw new ArgumentNullException("Username, password or email is empty.");
-            }
+            RegistrationValidator validator = new RegistrationValidator();
+            await validator.ValidateAndThrowAsync(inModel);
 
             var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Username == inModel.UserName || 
                 x.Email == inModel.Email, cancellationToken);

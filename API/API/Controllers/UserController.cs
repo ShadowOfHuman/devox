@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using API.BLL.Validators;
 using FluentValidation;
+using API.BLL.Helpers;
 
 namespace API.Controllers
 {
@@ -26,14 +27,11 @@ namespace API.Controllers
     {
         private readonly IAccessControlService _iAccessControlService;
         private readonly IUserServices _userService;
-        private readonly AppSettings _appSettings;
 
-        public UserController(IAccessControlService accessControlService, IUserServices userServices,
-            IOptions<AppSettings> appSettings)
+        public UserController(IAccessControlService accessControlService, IUserServices userServices)
         {
             _iAccessControlService = accessControlService;
             _userService = userServices;
-            _appSettings = appSettings.Value; 
         }
 
         [AllowAnonymous]
@@ -41,6 +39,12 @@ namespace API.Controllers
         [Route("registration")]
         public async Task<Registration.OutModel> Registration([FromBody]Registration.InModel inModel)
         {
+            Registration.InModel model = new Registration.InModel
+            {
+                Email = "email",
+                PasswordHash = "passwordHash",
+                UserName = "user name"
+            };
             RegistrationValidator validationRules = new RegistrationValidator();
             await validationRules.ValidateAndThrowAsync(inModel);
             return await _iAccessControlService.Registration(inModel);
@@ -53,7 +57,7 @@ namespace API.Controllers
         {
             AuthValidator validationRules = new AuthValidator();
             await validationRules.ValidateAndThrowAsync(inModel);
-            return await _iAccessControlService.Authentication(inModel, _appSettings.Secret);
+            return await _iAccessControlService.Authentication(inModel);
         }
 
         [HttpPost]
@@ -79,6 +83,8 @@ namespace API.Controllers
         [Authorize]
         [Route("{ResetPassword}")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPassword.InModel inModel) {
+            ResetPasswordValidator resetPasswordValidator = new ResetPasswordValidator();
+            await resetPasswordValidator.ValidateAndThrowAsync(inModel);
             await _userService.ResetPasword(inModel.IdUser, inModel.NewPasswordHash, inModel.OldPasswordHash);
             return Ok();
         }

@@ -12,8 +12,7 @@ namespace API.BLL.Services.AccessControl
 {
     public interface IAccessControlService
     {
-        Task<Authentication.Models.OutModel> Authentication(Authentication.Models.InModel inModel,
-            string secret, CancellationToken cancellationToken = default);
+        Task<Authentication.Models.OutModel> Authentication(Authentication.Models.InModel inModel, CancellationToken cancellationToken = default);
         Task<Registration.Models.OutModel> Registration(Registration.Models.InModel inModel, CancellationToken cancellationToken = default);
     }
 }
