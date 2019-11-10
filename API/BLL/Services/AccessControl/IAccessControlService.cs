@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Registration = API.BLL.Services.AccessControl.Registration.Models;
 using Authentication = API.BLL.Services.AccessControl.Authentication.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API.BLL.Services.AccessControl
 {
@@ -14,5 +15,6 @@ namespace API.BLL.Services.AccessControl
     {
         Task<Authentication.Models.OutModel> Authentication(Authentication.Models.InModel inModel, CancellationToken cancellationToken = default);
         Task<Registration.Models.OutModel> Registration(Registration.Models.InModel inModel, CancellationToken cancellationToken = default);
+        Task ResetPassword(string email);
     }
 }

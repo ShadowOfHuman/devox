@@ -18,6 +18,9 @@ using System.Security.Claims;
 using API.BLL.Validators;
 using FluentValidation;
 using API.BLL.Helpers;
+using API.BLL.Services.Users;
+using API.BLL.Services.Emails;
+using API.BLL.Models;
 
 namespace API.BLL.Services.AccessControl
 {
@@ -25,11 +28,15 @@ namespace API.BLL.Services.AccessControl
     {
         private readonly IDbContext _dbContext;
         private readonly AppSettings _appSettings;
+        private readonly IUserServices _userService;
+        private readonly IEmailService _emailService;
 
-        public AccessControlService(IDbContext dbContext, IOptions<AppSettings> options)
+        public AccessControlService(IDbContext dbContext, IOptions<AppSettings> options, IUserServices userService, IEmailService emailService)
         {
             this._dbContext = dbContext;
             _appSettings = options.Value;
+            _userService = userService;
+            _emailService = emailService;
 
         }
 
@@ -95,6 +102,15 @@ namespace API.BLL.Services.AccessControl
 
             await _dbContext.SaveChangesAsync(cancellationToken);
             return new Registration.Models.OutModel { IdUser = newUser.Id };
+        }
+
+        public async Task ResetPassword(string email)
+        {
+            User user = await _dbContext.Users.SingleAsync(item => item.Email == email);
+            await _emailService.SendEmailAsync(new Email {
+                
+            });
+
         }
     }
 }
