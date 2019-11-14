@@ -25,6 +25,7 @@ using API.Hubs;
 using API.Extentions;
 using BLL.Services.Games;
 using API.BLL.Helpers;
+using API.BLL.Services.Emails;
 
 namespace API
 {
@@ -51,6 +52,7 @@ namespace API
             services.AddScoped<IAccessControlService, AccessControlService>();
             services.AddScoped<IUserServices, UserService>();
             services.AddScoped<IGameServices, GameServices>();
+            services.AddScoped<IEmailService, EmailService>();
 
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 

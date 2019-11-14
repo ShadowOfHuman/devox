@@ -39,12 +39,6 @@ namespace API.Controllers
         [Route("registration")]
         public async Task<Registration.OutModel> Registration([FromBody]Registration.InModel inModel)
         {
-            Registration.InModel model = new Registration.InModel
-            {
-                Email = "email",
-                PasswordHash = "passwordHash",
-                UserName = "user name"
-            };
             RegistrationValidator validationRules = new RegistrationValidator();
             await validationRules.ValidateAndThrowAsync(inModel);
             return await _iAccessControlService.Registration(inModel);

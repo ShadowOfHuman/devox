@@ -35,7 +35,8 @@ namespace API.Controllers
         [Route("resetPassword")]
         public async Task<ActionResult> ResetPassword([FromQuery] string email)
         {
-            return await _accessService.ResetPassword(email);
+            await _accessService.ResetPassword(email);
+            return Ok();
         }
     }
 }

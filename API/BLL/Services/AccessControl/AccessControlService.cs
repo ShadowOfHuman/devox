@@ -108,6 +108,7 @@ namespace API.BLL.Services.AccessControl
         {
             User user = await _dbContext.Users.SingleAsync(item => item.Email == email);
             await _emailService.SendEmailAsync(new Email {
+                SenderEmail = user.Email,
                 
             });
 

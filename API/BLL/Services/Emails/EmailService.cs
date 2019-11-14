@@ -10,9 +10,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BLL.Services.Emails
+namespace API.BLL.Services.Emails
 {
-    class EmailService
+    public class EmailService :IEmailService
     {
         private readonly EmailSettings _emailSettings;
         public EmailService(IOptions<EmailSettings> emailSettings)
