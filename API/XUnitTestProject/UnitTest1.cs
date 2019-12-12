@@ -72,7 +72,7 @@ namespace XUnitTestProject
             }
             catch (AggregateException ae)
             {
-                //HARDCOOODE
+                //HARDCOOOD
                 ae.Handle((x) =>
                 {
                     if (x is ValidationException) 
