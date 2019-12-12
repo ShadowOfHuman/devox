@@ -32,7 +32,7 @@
   + FrontEnd: [Bootstrap 4](https://bootstrap-4.ru/) + [JQuery](https://jquery.com/) 
     + ***Дополнительно [React](https://reactjs.org/)***
   + BackEnd: [.NET Core](https://docs.microsoft.com/ru-ru/dotnet/core/), [MS SQL Server](https://www.microsoft.com/ru-ru/sql-server/sql-server-2016), [Docker](https://www.docker.com/) API controller, Code First
-  + Тестирование: [NUnit](https://nunit.org/) - UnitTests, 
+  + Тестирование: [xUnit](https://xunit.net/) - XUnitTest, 
     + ***Дополнительно [Selenium](https://www.seleniumhq.org/)***
   
 ## Тестирование
