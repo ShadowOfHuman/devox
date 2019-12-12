@@ -26,7 +26,6 @@ using BLL.Services.Games;
 using API.BLL.Helpers;
 using API.BLL.Services.Emails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Swashbuckle.Swagger;
 
 namespace API
 {

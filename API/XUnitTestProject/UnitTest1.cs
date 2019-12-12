@@ -1,3 +1,4 @@
+
 using API.BLL.Helpers;
 using API.BLL.Services.AccessControl;
 using API.BLL.Services.Emails;
@@ -7,11 +8,11 @@ using API.Common;
 using API.Controllers;
 using API.DAL.Context;
 using BLL.Services.Games;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Text;
 using Xunit;
@@ -31,7 +32,7 @@ namespace XUnitTestProject
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true)
                 .Build();
-            
+
             var connectionString = config.GetSection("AppSettings").Get<AppSettings>();
             serviceCollection.AddOptions();
             serviceCollection.AddScoped<IDbContext, ApplicationDBContext>();
@@ -46,12 +47,12 @@ namespace XUnitTestProject
         public ServiceProvider ServiceProvider { get; private set; }
     }
 
-    public class UnitTest1 :IClassFixture<DbFixture>
+    public class UnitTest1 : IClassFixture<DbFixture>
     {
         UserController userController;
         private ServiceProvider serviceProvider;
 
-        public UnitTest1( DbFixture dbFixture)
+        public UnitTest1(DbFixture dbFixture)
         {
             serviceProvider = dbFixture.ServiceProvider;
             userController = new UserController(
@@ -59,6 +60,7 @@ namespace XUnitTestProject
                     serviceProvider.GetService<IUserServices>()
                 );
         }
+
 
         [Fact]
         public void Test1()
@@ -75,12 +77,12 @@ namespace XUnitTestProject
                 //HARDCOOODE
                 ae.Handle((x) =>
                 {
-                    if (x is ValidationException) 
+                    if (x is ValidationException)
                     {
                         Assert.True(true);
                         return true;
                     }
-                    Assert.True(false); 
+                    Assert.True(false);
                     return false;
                 });
             }
