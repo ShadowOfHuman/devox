@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using API.DAL.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using API.BLL.Services.Users;
@@ -26,6 +25,8 @@ using API.Extentions;
 using BLL.Services.Games;
 using API.BLL.Helpers;
 using API.BLL.Services.Emails;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Swashbuckle.Swagger;
 
 namespace API
 {
@@ -91,7 +92,7 @@ namespace API
             services.AddSwaggerGen(c =>
             {
                 c.CustomSchemaIds(x => x.FullName);
-                c.SwaggerDoc("v1", new Info { Title = "DevOX API", Version = "v1" });
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "DevOX API", Version = "v1" });
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);

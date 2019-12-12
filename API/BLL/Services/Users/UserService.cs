@@ -42,11 +42,6 @@ namespace API.BLL.Services.Users
             User user = await _dbContext.Users.FindAsync(new object[] { id }, cancellationToken);
             return user;
         }
-        public async Task<IEnumerable<User>> GetAll(CancellationToken cancellationToken = default)
-        {
-            var users = await _dbContext.Users.Where(x => !x.IsDeleted).ToListAsync(cancellationToken);
-            return users;
-        }
         public async Task Update(User item, CancellationToken cancellationToken = default)
         {
             _dbContext.Users.Update(item);
@@ -97,6 +92,12 @@ namespace API.BLL.Services.Users
                 Rating = user.Rating,
                 Username = user.Username
             };
+        }
+
+        async Task<IEnumerable<User>> ICRUDService<User>.GetAll(CancellationToken cancellationToken)
+        {
+            var users = await _dbContext.Users.Where(x => !x.IsDeleted).ToListAsync(cancellationToken);
+            return users;
         }
     }
 }
