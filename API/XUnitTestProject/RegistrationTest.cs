@@ -58,6 +58,7 @@ namespace XUnitTestProject
         [InlineData("", "asd@a.a", "qwerty")]
         [InlineData("user", "", "qwerty")]
         [InlineData("user", "asd@a.a", "")]
+        [InlineData("123123", "12312", "123123")]
         public void IncorrectRegistration(string username, string email, string password)
         {
             UserRegistrationValidator validationRules = new UserRegistrationValidator();
