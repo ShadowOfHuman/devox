@@ -1,25 +1,16 @@
-
-using API.BLL.Helpers;
+﻿using API.BLL.Helpers;
 using API.BLL.Services.AccessControl;
 using API.BLL.Services.Emails;
 using API.BLL.Services.Games;
 using API.BLL.Services.Users;
-using API.Common;
-using API.Controllers;
+
 using API.DAL.Context;
 using BLL.Services.Games;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Text;
 using Xunit;
-
-
-using Auth = API.BLL.Services.AccessControl.Authentication.Models;
-using Registration = API.BLL.Services.AccessControl.Registration.Models;
 
 namespace XUnitTestProject
 {
@@ -46,47 +37,8 @@ namespace XUnitTestProject
         public AppSettings AppSettings { get; set; }
         public ServiceProvider ServiceProvider { get; private set; }
     }
-
-    public class UnitTest1 : IClassFixture<DbFixture>
+    public class Test : IClassFixture<DbFixture>
     {
-        UserController userController;
-        private ServiceProvider serviceProvider;
-
-        public UnitTest1(DbFixture dbFixture)
-        {
-            serviceProvider = dbFixture.ServiceProvider;
-            userController = new UserController(
-                    serviceProvider.GetService<IAccessControlService>(),
-                    serviceProvider.GetService<IUserServices>()
-                );
-        }
-
-
-        [Fact]
-        public void Test1()
-        {
-            Auth.InModel inModel = new Auth.InModel();
-            inModel.Email = "asdasda";
-            inModel.PasswordHash = Encoding.UTF8.GetString(Cryptor.CalculateHashOfPassword("asdasda"));
-            try
-            {
-                Auth.OutModel outModel = userController.Authentication(inModel).Result;
-            }
-            catch (AggregateException ae)
-            {
-                //HARDCOOODE
-                ae.Handle((x) =>
-                {
-                    if (x is ValidationException)
-                    {
-                        Assert.True(true);
-                        return true;
-                    }
-                    Assert.True(false);
-                    return false;
-                });
-            }
-
-        }
+        public Test(DbFixture dbFixture) {}
     }
 }
