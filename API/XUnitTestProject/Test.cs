@@ -39,6 +39,9 @@ namespace XUnitTestProject
     }
     public class Test : IClassFixture<DbFixture>
     {
-        public Test(DbFixture dbFixture) {}
+        protected ServiceProvider serviceProvider;
+        public Test(DbFixture dbFixture) {
+            serviceProvider = dbFixture.ServiceProvider;
+        }
     }
 }

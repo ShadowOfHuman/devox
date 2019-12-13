@@ -17,15 +17,16 @@ using Auth = API.BLL.Services.AccessControl.Authentication.Models;
 
 using System.Threading;
 using System.Threading.Tasks;
+using API.DAL.Context;
 
 namespace XUnitTestProject
 {
     public class AuthTest : Test
     {
         UserController userController;
-        private ServiceProvider serviceProvider;
+        IDbContext dbContext;
         public AuthTest(DbFixture dbFixture) : base(dbFixture) {
-            serviceProvider = dbFixture.ServiceProvider;
+            dbContext = serviceProvider.GetService<IDbContext>();
             userController = new UserController(
                     serviceProvider.GetService<IAccessControlService>(),
                     serviceProvider.GetService<IUserServices>()

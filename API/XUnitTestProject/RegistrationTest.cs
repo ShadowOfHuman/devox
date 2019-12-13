@@ -1,40 +1,75 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
+using Bogus;
 using Microsoft.Extensions.DependencyInjection;
-using System.ComponentModel.DataAnnotations;
-
 using API.Common;
 using API.Controllers;
 using API.BLL.Services.AccessControl;
 using API.BLL.Services.Users;
-using Registration = API.BLL.Services.AccessControl.Registration.Models;
+using API.DAL.Context;
+using API.DAL.Models;
+using API.BLL.Validators.DalValidators;
+using FluentValidation;
 
 namespace XUnitTestProject
 {
     public class RegistrationTest : Test
     {
         UserController userController;
-        private ServiceProvider serviceProvider;
+        IDbContext dbContext;
         public RegistrationTest(DbFixture dbFixture) : base(dbFixture)
         {
-            serviceProvider = dbFixture.ServiceProvider;
+            dbContext = serviceProvider.GetService<IDbContext>();
             userController = new UserController(
                     serviceProvider.GetService<IAccessControlService>(),
                     serviceProvider.GetService<IUserServices>()
                 );
         }
-        [Theory]
-        [InlineData("a@a.a", "qwerty")]
-        public void Test(string email, string password)
+
+        User user;
+
+        // тест верной регистрации
+        [Fact]
+        public void Registation()
         {
-            Registration.InModel inModel = new Registration.InModel
+            UserRegistrationValidator validationRules = new UserRegistrationValidator();
+            Faker<User> newUser = new Faker<User>("en")
+                .RuleFor(u => u.Username, (f, u) => f.Internet.UserName())
+                .RuleFor(u => u.Email, (f, u) => f.Internet.Email())
+                .RuleFor(u => u.PasswordHash, (f, u) => Cryptor.CalculateHashOfPassword(f.Internet.Password()));
+            user = newUser.Generate();
+            var valid = validationRules.ValidateAndThrowAsync(newUser);
+            FluentValidation.Results.ValidationResult result = validationRules.Validate(newUser);
+            Assert.True(result.IsValid);
+        }
+
+        // тест повторной регистрации
+        [Fact]
+        public void ReRegistration()
+        {
+            Assert.Throws<ArgumentNullException>(() => dbContext.Users.Add(user));
+        }
+
+        // тест неверной регистрации
+        [Theory]
+        [InlineData("", "", "")]
+        [InlineData(" ", " ", " ")]
+        [InlineData("           ", "            ", "            ")]
+        [InlineData("", "asd@a.a", "qwerty")]
+        [InlineData("user", "", "qwerty")]
+        [InlineData("user", "asd@a.a", "")]
+        public void IncorrectRegistration(string username, string email, string password)
+        {
+            UserRegistrationValidator validationRules = new UserRegistrationValidator();
+            User newUser = new User
             {
+                Username = username,
                 Email = email,
-                PasswordHash = Encoding.UTF8.GetString(Cryptor.CalculateHashOfPassword(password))
+                PasswordHash = Cryptor.CalculateHashOfPassword(password)
             };
-            serviceProvider.GetService<IAccessControlService>().Registration(inModel);
+            var valid = validationRules.ValidateAndThrowAsync(newUser);
+            FluentValidation.Results.ValidationResult result = validationRules.Validate(newUser);
+            Assert.False(result.IsValid);
         }
     }
 }
