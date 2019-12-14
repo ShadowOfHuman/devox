@@ -1,15 +1,10 @@
 ﻿using Xunit;
 using Microsoft.Extensions.DependencyInjection;
-using API.Common;
 using API.Controllers;
 using API.BLL.Services.AccessControl;
 using API.BLL.Services.Users;
 using API.DAL.Context;
-using API.DAL.Models;
-using API.BLL.Validators.DalValidators;
-using FluentValidation;
 using API.BLL.Services.Games;
-using CreateGame = API.BLL.Services.Games.CreateGame.Models;
 using System;
 
 namespace XUnitTestProject
@@ -26,21 +21,32 @@ namespace XUnitTestProject
                     serviceProvider.GetService<IAccessControlService>(),
                     serviceProvider.GetService<IUserServices>()
                 );
+            gameServices = serviceProvider.GetService<IGameServices>();
         }
 
+        // тест на создания лоббиы
         [Theory]
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(3)]
         [InlineData(4)]
         [InlineData(5)]
-        public void createGame(long userID)
+        public void CreateGame(long userID)
         {
-          /*  CreateGame.InModel inModel = new CreateGame.InModel
-            {
-                IdCreatedUser = userID,
-            };*/
-            var result = gameServices.CreateGame(userID);
+            var result = gameServices.CreateGame(userID).Result;
+            Assert.NotNull(result);
+        }
+
+        // обработка исключения
+        [Theory]
+        [InlineData(null)]
+        [InlineData(-1)]
+        [InlineData(-2)]
+        [InlineData(-3)]
+        [InlineData(-4)]
+        public void CreateGameExeption(long userID)
+        {
+            Assert.Throws<AggregateException>(() => gameServices.CreateGame(userID).Result);
         }
     }
 }

@@ -101,7 +101,10 @@ namespace BLL.Services.Games
         }
         async public Task<Game> Get(long id, CancellationToken cancellationToken = default)
         {
-            var game = await _dbContext.Games.FindAsync(id);
+            var game = await _dbContext.Games
+                .Include(item => item.FirstUser)
+                .Include(item=>item.TwoUser)
+                .FirstAsync(x => x.Id == id);
             if (game == null)
             {
                 throw new InvalidOperationException("Game not found.");

@@ -1,6 +1,7 @@
 ﻿using API.BLL.Helpers;
 using API.BLL.Services.AccessControl;
 using API.BLL.Services.Emails;
+using API.BLL.Services.GameMoves;
 using API.BLL.Services.Games;
 using API.BLL.Services.Users;
 
@@ -31,6 +32,7 @@ namespace XUnitTestProject
             serviceCollection.AddScoped<IAccessControlService, AccessControlService>();
             serviceCollection.AddScoped<IUserServices, UserService>();
             serviceCollection.AddScoped<IGameServices, GameServices>();
+            serviceCollection.AddScoped<IGameMoveService, GameMoveService>();
             serviceCollection.AddScoped<IEmailService, EmailService>();
             ServiceProvider = serviceCollection.BuildServiceProvider();
         }
