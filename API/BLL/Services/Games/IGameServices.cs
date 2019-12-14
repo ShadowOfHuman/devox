@@ -7,7 +7,7 @@ namespace API.BLL.Services.Games
 {
     public interface IGameServices : ICRUDService<Game>
     {
-        Task<long> CreateGame(long IdUser);
+        Task<long> CreateGame(long IdUser, string title, int size);
         Task<IEnumerable<Game>> GetAllGameByUser(long IdUser);
         Task ConnectToGame(long idGame, long idUser);
         Task<StateGame> GetStateGame(long idGame);

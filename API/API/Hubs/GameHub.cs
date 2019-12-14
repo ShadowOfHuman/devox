@@ -26,10 +26,10 @@ namespace API.Hubs
 
         async public Task CreateGame(CreateGame.InModel inModel)
         {
-            long gameName = await _gameServices.CreateGame(inModel.IdCreatedUser);
+            long gameName = await _gameServices.CreateGame(inModel.IdCreatedUser, inModel.Title, inModel.Size);
             await Groups.AddToGroupAsync(Context.ConnectionId, gameName.ToString());
             //TODO generate link and send it to user for share game
-            await Clients.Caller.SendAsync("CreatedGame", new CreateGame.OutModel { IdGame = gameName });
+            await Clients.Caller.SendAsync("CreateGame", new CreateGame.OutModel { IdGame = gameName });
         }
 
         async public Task ConnectToGame(ConnectToGame.InModel inModel)

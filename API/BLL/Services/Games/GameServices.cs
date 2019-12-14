@@ -25,7 +25,7 @@ namespace BLL.Services.Games
             this._userServices = userService;
         }
         //1 - крестики, 2 - нолики, 0 - ни че го
-        async public Task<long> CreateGame(long IdUser)
+        async public Task<long> CreateGame(long IdUser, string title, int size)
         {
             var user = _dbContext.Users.Find(IdUser);
             if (user == null)
@@ -34,7 +34,9 @@ namespace BLL.Services.Games
             }
             Game game = new Game
             {
+                Title = title,
                 FirstUser = user,
+                SizeField = size
                 //TODO: Generate url for game
             };
             await _dbContext.Games.AddAsync(game);

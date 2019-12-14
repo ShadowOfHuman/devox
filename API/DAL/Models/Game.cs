@@ -5,6 +5,7 @@ namespace API.DAL.Models
 {
     public class Game : BasicModel
     {
+        public string Title { get; set; }
         public int  GameState{ get; set; }
         public long IdWinUser { get; set; }
         public string UrlHash { get; set; }
