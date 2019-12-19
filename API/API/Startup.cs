@@ -16,16 +16,16 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using API.BLL.Services.Users;
 using API.BLL.Services.AccessControl;
-using API.BLL.Services.Games;
 using System.Reflection;
 using System.IO;
 using Swashbuckle.AspNetCore.Swagger;
 using API.Hubs;
 using API.Extentions;
-using BLL.Services.Games;
 using API.BLL.Helpers;
 using API.BLL.Services.Emails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using API.BLL.Services.Games;
+using API.BLL.Services.GameMoves;
 
 namespace API
 {
@@ -53,6 +53,7 @@ namespace API
             services.AddScoped<IUserServices, UserService>();
             services.AddScoped<IGameServices, GameServices>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IGameMoveService, GameMoveService>();
 
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
@@ -120,7 +121,7 @@ namespace API
             app.UseSignalR(routes =>
             {
                 routes.MapHub<GameHub>("/game");
-            });
+            }).UseCors();
             app.UseCors(builder =>
             builder.AllowAnyOrigin()
             .AllowAnyHeader()

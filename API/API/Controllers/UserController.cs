@@ -83,6 +83,14 @@ namespace API.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("checkauth")]
+        public async Task<IActionResult> CheckToken()
+        {
+            return Ok();
+        }
+
 
         [HttpGet]
         [Route("test")]

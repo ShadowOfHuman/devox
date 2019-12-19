@@ -22,9 +22,9 @@ namespace API.Controllers
     {
         private readonly IGameServices gameService;
 
-        public GameController(IGameServices gameServices)
+        public GameController(IGameServices _gameServices)
         {
-            this.gameService = gameService;
+            gameService = _gameServices;
         }
 
         
@@ -35,6 +35,14 @@ namespace API.Controllers
             GameModel.CreateGame.Models.OutModel outModel = new GameModel.CreateGame.Models.OutModel();
             outModel.IdGame =  await gameService.CreateGame(inModel.IdCreatedUser, inModel.Title, inModel.Size);
             return outModel;
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("all")]
+        public async Task<IEnumerable<GameModel.GetAllGames.Models.OutModel>>GetAllGame()
+        {
+            return await gameService.GetAllPublicGames();
         }
 
 

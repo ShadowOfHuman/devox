@@ -11,7 +11,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BLL.Services.Games
+using GetAllGames = API.BLL.Services.Games.GetAllGames.Models;
+
+namespace API.BLL.Services.Games
 {
     public class GameServices : IGameServices
     {
@@ -40,7 +42,7 @@ namespace BLL.Services.Games
                 //TODO: Generate url for game
             };
             await _dbContext.Games.AddAsync(game);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
             return game.Id;
         }
         async public Task ConnectToGame(long idGame, long idUser)
@@ -136,6 +138,14 @@ namespace BLL.Services.Games
             return move;
         }
         #endregion
+
+        async public Task<IEnumerable<GetAllGames.Models.OutModel>> GetAllPublicGames()
+        {
+            List<GetAllGames.Models.OutModel> outModels = new List<GetAllGames.Models.OutModel>();
+            var games = await GetAll();
+            (await GetAll()).ToList().ForEach(item => outModels.Add(new GetAllGames.Models.OutModel(item.Id, item.Title, item.SizeField)));
+            return outModels;
+        }
         private StateGame CheckStateGame(Game game, GameMove gameMove)
         {
             List<GameMove> localGameMove;
