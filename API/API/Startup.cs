@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+//using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using API.DAL.Context;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -118,18 +120,21 @@ namespace API
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "DevOX API V1");
             });
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<GameHub>("/game");
-            }).UseCors();
-            app.UseCors(builder =>
-            builder.AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-                );
-            app.UseHttpsRedirection();
+            
             app.ConfigureCustomExceptionMiddleware();
             app.UseAuthentication();
+
+            app.UseCors(builder =>
+            builder.WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+                );
+            app.UseSignalR(endpoints =>
+            endpoints.MapHub<GameHub>("/game")
+            );
+            
+            //app.UseHttpsRedirection();
             app.UseMvc();
             
         }
