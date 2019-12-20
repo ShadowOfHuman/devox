@@ -1,43 +1,40 @@
-# Web-приложения Крестики-Нолики
+## Web app "Cross-Zero"
 
-## Состав команды
-+ Аналитик - Леонтьев Иван
-+ FrontEnd - Турчин Максим
-+ BackEnd - Пирожков Максим
-+ Тестирование - Леммер Вадим
+## About
 
-## Требования
-  Разработать Web-приложение Крестики-Нолики
-  1. Игра с компьютером.
-      1.  Бот проверяет свой ход на возможность выйгрыша.
-      2.  Бот проверяет свой ход на необходимость помешать игроку выйграть.
-  2. Игра с реальными людьми по сети
-      1.  Игроки имеют внутриигровую валюту BitchCoin, которую теряют при поражении, и получают при победе.
-      2.  Feature: Продавать паки с автарами за внутриигровую валюту.
-  3. Регистрация пользователей
-      1.  Пользователь может начать игру только авторизовавшись.
-      2.  Два типа учетных записей пользователь и администратор.
-          1. Пользователи имеют статистику (Винрейт и т.п.)
-          2. Администратор может просматривать статистику всех пользователей
-          3. Администратор такой же пользователь, но с большим доступом
-       3.  Учетная запись привязывается к e-mail
-  <br/>Пример:<br/>
-  ![register](https://w3hubs.com/wp-content/uploads/2018/09/Login-and-Registration-Form-In-Bootstrap-4-1024x495.jpg)
-  4.  Кастомные размеры полей игры, и кастомное победное число.
-  <br/>Пример:<br/>
-  ![crossZeros](https://monateka.com/images/112180.jpg)
-  5.  Изменяемое UI (background, "персонажи")
-  
-## Стек технологий
-  + FrontEnd: [Bootstrap 4](https://bootstrap-4.ru/) + [JQuery](https://jquery.com/) 
-    + ***Дополнительно [React](https://reactjs.org/)***
-  + BackEnd: [.NET Core](https://docs.microsoft.com/ru-ru/dotnet/core/), [MS SQL Server](https://www.microsoft.com/ru-ru/sql-server/sql-server-2016), [Docker](https://www.docker.com/) API controller, Code First
-  + Тестирование: [xUnit](https://xunit.net/) - XUnitTest, 
-    + ***Дополнительно [Selenium](https://www.seleniumhq.org/)***
-  
-## Тестирование
-   Unit-тесты </br>
-   Под каждый модуль не менее 5 тест-кейсов, ***в качестве дополнительного задания использовать систему автоматизации (Selenium)***
+Cross-Zero is a web application Tic-Tac-Toe game. We create this for semester work on the subject "Software project management".
 
+This repository provides only backend. Frontend available in [devox-frontend](https://github.com/ShadowOfHuman/devox-frontend).
 
-***Дополнительные задания выделены жирным курсивом***
+## Requirements
+1. Game with bot:
+	1. Bot checks its move for the possibility of winning;
+	2. Bot checks its move to prevent the player from winning.
+2. Game with real people in Internet
+ 	1. In-game currency.
+  2. Customization
+3. Registration
+  1. User can start the game only by logging in.
+	2. Account is tied to e-mail.
+
+## Specification
+Used technologies:
+* [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/)
+* [MySQL](https://dev.mysql.com/doc/)
+* API Contriller
+
+## Testing
+Used technologies:
+* [xUnit](https://xunit.net/)
+* [Selenium](https://www.seleniumhq.org/)
+
+## Contributors
+* Analyst - Ivan Leontyev
+* BackEnd - Pirozhkov Max
+* Tester - Lemmer Vadim
+
+* Lecturer - Stepanov Peter
+
+## License
+
+The Cross-Zero game is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
