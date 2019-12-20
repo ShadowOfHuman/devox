@@ -38,7 +38,9 @@ namespace API.BLL.Services.Games
             {
                 Title = title,
                 FirstUser = user,
-                SizeField = size
+                SizeField = size,
+                MoveCross = Convert.ToBoolean(new Random().Next(0, 2)),
+                GameState = (int)StateGame.WaitingSecondUser
                 //TODO: Generate url for game
             };
             await _dbContext.Games.AddAsync(game);
@@ -52,10 +54,6 @@ namespace API.BLL.Services.Games
             if (user == null)
             {
                 throw new InvalidOperationException("User not found");
-            }
-            if(game.FirstUser.Id == idUser)
-            {
-                throw new ArgumentException("User Id is not valid");
             }
             game.TwoUser = user;
             game.GameState = (int)StateGame.StartedGame;
@@ -107,7 +105,10 @@ namespace API.BLL.Services.Games
         }
         async public Task<Game> Get(long id, CancellationToken cancellationToken = default)
         {
-            var game = await _dbContext.Games.FindAsync(id);
+            var game = await _dbContext.Games.Where(gameItem => gameItem.Id == id)
+                    .Include(userItem => userItem.FirstUser)
+                    .Include(gameItem => gameItem.TwoUser)
+                    .FirstOrDefaultAsync();
             if (game == null)
             {
                 throw new InvalidOperationException("Game not found.");
@@ -116,7 +117,7 @@ namespace API.BLL.Services.Games
         }
         async public Task<IEnumerable<Game>> GetAll(CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Games.ToListAsync(cancellationToken);
+            return await _dbContext.Games.Where(game => game.GameState == (int)StateGame.WaitingSecondUser).ToListAsync(cancellationToken);
         }
         async public Task<IEnumerable<Game>> GetAllGameByUser(long IdUser)
         {

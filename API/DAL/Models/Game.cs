@@ -11,6 +11,7 @@ namespace API.DAL.Models
         public string UrlHash { get; set; }
         public int SizeField { get; set; }
         public int CountItemForWin { get; set; }
+        public bool MoveCross { get; set; }
         public User FirstUser { get; set; }
         public User TwoUser { get; set; }
         public string ConnectionIdUserFirst { get; set; }

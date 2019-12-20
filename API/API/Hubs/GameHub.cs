@@ -24,12 +24,9 @@ namespace API.Hubs
             _userServices = iUserServices;
         }
 
-        async public Task CreateGame(CreateGame.InModel inModel)
+        async public Task CreateGame(long gameId)
         {
-            long gameName = await _gameServices.CreateGame(inModel.IdCreatedUser, inModel.Title, inModel.Size);
-            await Groups.AddToGroupAsync(Context.ConnectionId, gameName.ToString());
-            //TODO generate link and send it to user for share game
-            await Clients.Caller.SendAsync("CreateGame", new CreateGame.OutModel { IdGame = gameName });
+            await Groups.AddToGroupAsync(Context.ConnectionId, gameId.ToString());
         }
 
         async public Task ConnectToGame(ConnectToGame.InModel inModel)
@@ -37,6 +34,9 @@ namespace API.Hubs
             //TODO check active this game or not
             await _gameServices.ConnectToGame(inModel.IdGame, inModel.IdUser);
             await Groups.AddToGroupAsync(Context.ConnectionId, inModel.IdGame.ToString());
+            User user = await _userServices.Get(inModel.IdUser);
+            await Clients.GroupExcept(inModel.IdGame.ToString(), inModel.IdGame.ToString()).SendAsync("UserWasBeenConnection", inModel.IdUser, user.Username);
+
         }
 
         async public Task MakeAMove(MakeAMoveModel.InModel inModel)
