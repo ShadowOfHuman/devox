@@ -35,7 +35,7 @@ namespace API.Hubs
         async public Task ConnectToGame(ConnectToGame.InModel inModel)
         {
             //TODO check active this game or not
-            await _gameServices.ConnectToGame(inModel.IdGame, inModel.IdGame);
+            await _gameServices.ConnectToGame(inModel.IdGame, inModel.IdUser);
             await Groups.AddToGroupAsync(Context.ConnectionId, inModel.IdGame.ToString());
         }
 

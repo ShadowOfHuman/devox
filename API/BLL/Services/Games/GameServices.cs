@@ -67,9 +67,11 @@ namespace API.BLL.Services.Games
             User user;
             try
             {
+                Console.WriteLine(gameId);
                 user = await _dbContext.Users.Where(userItem => userItem.Id == userId)
                     .Include(userItem => userItem.Games.Where(x => x.Id == gameId))
-                    .ThenInclude(gameItem => gameItem.GameMoves).FirstOrDefaultAsync();
+                    .ThenInclude(gameItem => gameItem.GameMoves)
+                    .FirstOrDefaultAsync();
             }
             catch
             {
@@ -267,7 +269,7 @@ namespace API.BLL.Services.Games
             string result = "";
             foreach(string item in field)
             {
-                result.Concat(sep + item);
+                result+=sep+item;
             }
             return result;
         }
