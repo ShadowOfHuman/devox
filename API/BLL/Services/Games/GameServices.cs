@@ -63,13 +63,18 @@ namespace API.BLL.Services.Games
         async public Task<StateGame> MakeMove(long userId, long gameId, int newX, int newY)
         {
             User user;
+            Game game;
             try
             {
                 Console.WriteLine(gameId);
+                game = await _dbContext.Games.Where(item => item.Id == gameId)
+                    .Include(gameItem => gameItem.GameMoves).FirstOrDefaultAsync();
+
                 user = await _dbContext.Users.Where(userItem => userItem.Id == userId)
-                    .Include(userItem => userItem.Games.Where(x => x.Id == gameId))
-                    .ThenInclude(gameItem => gameItem.GameMoves)
+                    .Include(userItem => userItem.Games).Where(x => x.Id == gameId)
+                    .Include(gameItem => gameItem)
                     .FirstOrDefaultAsync();
+
             }
             catch
             {
