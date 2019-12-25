@@ -64,16 +64,16 @@ namespace API.BLL.Services.Games
         {
             User user;
             Game game;
+            List<GameMove> makeMoves;
             try
             {
-                Console.WriteLine(gameId);
                 game = await _dbContext.Games.Where(item => item.Id == gameId)
-                    .Include(gameItem => gameItem.GameMoves).FirstOrDefaultAsync();
-
-                user = await _dbContext.Users.Where(userItem => userItem.Id == userId)
-                    .Include(userItem => userItem.Games).Where(x => x.Id == gameId)
-                    .Include(gameItem => gameItem)
+                    .Include(user1 => user1.FirstUser)
+                    .Include(user1 => user1.TwoUser)
+                    .Include(gameItem => gameItem.GameMoves)
                     .FirstOrDefaultAsync();
+
+                user = await _dbContext.Users.Where(userItem => userItem.Id == userId).FirstOrDefaultAsync();
 
             }
             catch
